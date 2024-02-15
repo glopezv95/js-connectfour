@@ -55,9 +55,16 @@ strong {
     place-items: center;
     grid-template-columns: repeat(7, 5.2rem);
 }
+
 .container .col div {
     width: 5rem;
     height: 5rem;
     border-radius: 50%;
     border: 2px solid #000;
+}
+
+@media (max-width: 767px) {
+    :root {
+        font-size: 10px;
+    }
 }
