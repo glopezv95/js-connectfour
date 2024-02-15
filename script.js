@@ -48,7 +48,7 @@ colsArray.forEach(col => {
     })
 })
 
-function checkColor() {
+function checkHorizontal() {
 
     for (let i = 0; i < 4; i++) {
         for (let j = 0; j < container.children[i].children.length; j++) {
@@ -62,11 +62,51 @@ function checkColor() {
     }
 }
 
+function checkVertical() {
+
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 3; j++) {
+            if (
+                container.children[i].children[j].style.backgroundColor === container.children[i].children[j+1].style.backgroundColor &&
+                container.children[i].children[j].style.backgroundColor === container.children[i].children[j+2].style.backgroundColor &&
+                container.children[i].children[j].style.backgroundColor === container.children[i].children[j+3].style.backgroundColor &&
+                container.children[i].children[j].style.backgroundColor !== ""
+            ) {return true}
+        }
+    }
+}
+
+function checkDiagonal() {
+
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < container.children[i].children.length; j++) {
+            if (
+                j + 3 < container.children[i].children.length &&
+                container.children[i].children[j].style.backgroundColor === container.children[i+1].children[j+1].style.backgroundColor &&
+                container.children[i].children[j].style.backgroundColor === container.children[i+2].children[j+2].style.backgroundColor &&
+                container.children[i].children[j].style.backgroundColor === container.children[i+3].children[j+3].style.backgroundColor &&
+                container.children[i].children[j].style.backgroundColor !== ""
+            ) {return true}
+            else if (
+                j >= 3 &&
+                container.children[i].children[j].style.backgroundColor === container.children[i+1].children[j-1].style.backgroundColor &&
+                container.children[i].children[j].style.backgroundColor === container.children[i+2].children[j-2].style.backgroundColor &&
+                container.children[i].children[j].style.backgroundColor === container.children[i+3].children[j-3].style.backgroundColor &&
+                container.children[i].children[j].style.backgroundColor !== ""
+            ) {return true}
+        }
+    }
+}
+
 container.addEventListener("click", function () {
-    if (checkColor() === true) {
+    if (checkHorizontal() || checkVertical() || checkDiagonal()) {
         if (colorStr === "white") {
             document.querySelector("h1").textContent = `Congratulations ${nameBlack}, you've won`}
         else {document.querySelector("h1").textContent = `Congratulations ${nameWhite}, you've won`}
-        document.querySelector("h2").style.opacity = 0}
+        document.querySelector("h2").style.opacity = 0
+    colsArray.forEach(col => {
+        let clone = col.cloneNode(true);
+        col.parentElement.replaceChild(clone, col)
+    })}
     }
 )
