@@ -50,13 +50,13 @@ colsArray.forEach(col => {
 
 function checkHorizontal() {
 
-    for (let i = 0; i < 4; i++) {
-        for (let j = 0; j < container.children[i].children.length; j++) {
+    for (let div = 0; div < 4; div++) {
+        for (let row = 0; row < 6; row++) {
             if (
-                container.children[i].children[j].style.backgroundColor === container.children[i+1].children[j].style.backgroundColor &&
-                container.children[i].children[j].style.backgroundColor === container.children[i+2].children[j].style.backgroundColor &&
-                container.children[i].children[j].style.backgroundColor === container.children[i+3].children[j].style.backgroundColor &&
-                container.children[i].children[j].style.backgroundColor !== ""
+                container.children[div].children[row].style.backgroundColor === container.children[div+1].children[row].style.backgroundColor &&
+                container.children[div].children[row].style.backgroundColor === container.children[div+2].children[row].style.backgroundColor &&
+                container.children[div].children[row].style.backgroundColor === container.children[div+3].children[row].style.backgroundColor &&
+                container.children[div].children[row].style.backgroundColor !== ""
             ) {return true}
         }
     }
@@ -64,13 +64,13 @@ function checkHorizontal() {
 
 function checkVertical() {
 
-    for (let i = 0; i < 4; i++) {
-        for (let j = 0; j < 3; j++) {
+    for (let col = 0; col < 7; col++) {
+        for (let row = 0; row < 3; row++) {
             if (
-                container.children[i].children[j].style.backgroundColor === container.children[i].children[j+1].style.backgroundColor &&
-                container.children[i].children[j].style.backgroundColor === container.children[i].children[j+2].style.backgroundColor &&
-                container.children[i].children[j].style.backgroundColor === container.children[i].children[j+3].style.backgroundColor &&
-                container.children[i].children[j].style.backgroundColor !== ""
+                container.children[col].children[row].style.backgroundColor === container.children[col].children[row+1].style.backgroundColor &&
+                container.children[col].children[row].style.backgroundColor === container.children[col].children[row+2].style.backgroundColor &&
+                container.children[col].children[row].style.backgroundColor === container.children[col].children[row+3].style.backgroundColor &&
+                container.children[col].children[row].style.backgroundColor !== ""
             ) {return true}
         }
     }
@@ -78,21 +78,21 @@ function checkVertical() {
 
 function checkDiagonal() {
 
-    for (let i = 0; i < 4; i++) {
-        for (let j = 0; j < container.children[i].children.length; j++) {
+    for (let cond = 0; cond < 4; cond++) {
+        for (let j = 0; j < 6; j++) {
             if (
-                j + 3 < container.children[i].children.length &&
-                container.children[i].children[j].style.backgroundColor === container.children[i+1].children[j+1].style.backgroundColor &&
-                container.children[i].children[j].style.backgroundColor === container.children[i+2].children[j+2].style.backgroundColor &&
-                container.children[i].children[j].style.backgroundColor === container.children[i+3].children[j+3].style.backgroundColor &&
-                container.children[i].children[j].style.backgroundColor !== ""
+                j + 3 < 6 &&
+                container.children[cond].children[j].style.backgroundColor === container.children[cond+1].children[j+1].style.backgroundColor &&
+                container.children[cond].children[j].style.backgroundColor === container.children[cond+2].children[j+2].style.backgroundColor &&
+                container.children[cond].children[j].style.backgroundColor === container.children[cond+3].children[j+3].style.backgroundColor &&
+                container.children[cond].children[j].style.backgroundColor !== ""
             ) {return true}
             else if (
                 j >= 3 &&
-                container.children[i].children[j].style.backgroundColor === container.children[i+1].children[j-1].style.backgroundColor &&
-                container.children[i].children[j].style.backgroundColor === container.children[i+2].children[j-2].style.backgroundColor &&
-                container.children[i].children[j].style.backgroundColor === container.children[i+3].children[j-3].style.backgroundColor &&
-                container.children[i].children[j].style.backgroundColor !== ""
+                container.children[cond].children[j].style.backgroundColor === container.children[cond+1].children[j-1].style.backgroundColor &&
+                container.children[cond].children[j].style.backgroundColor === container.children[cond+2].children[j-2].style.backgroundColor &&
+                container.children[cond].children[j].style.backgroundColor === container.children[cond+3].children[j-3].style.backgroundColor &&
+                container.children[cond].children[j].style.backgroundColor !== ""
             ) {return true}
         }
     }
@@ -101,12 +101,20 @@ function checkDiagonal() {
 container.addEventListener("click", function () {
     if (checkHorizontal() || checkVertical() || checkDiagonal()) {
         if (colorStr === "white") {
-            document.querySelector("h1").textContent = `Congratulations ${nameBlack}, you've won`}
-        else {document.querySelector("h1").textContent = `Congratulations ${nameWhite}, you've won`}
+            document.querySelector("h1").textContent = `Congratulations ${nameBlack}, you've won`
+            nonBlackDivs = Array.from(document.querySelectorAll(".col div")).filter(element => {
+                return element.style.backgroundColor !== "rgb(0, 0, 0)"
+            })
+        for (div of nonBlackDivs) {
+            div.style.opacity = 0
+        }}
+        else {document.querySelector("h1").textContent = `Congratulations ${nameWhite}, you've won`
+        nonWhiteDivs = Array.from(document.querySelectorAll(".col div")).filter(element => {
+            return element.style.backgroundColor !== "rgb(255, 255, 255)"
+        })
+        for (div of nonWhiteDivs) {
+            div.style.opacity = 0
+    }}
         document.querySelector("h2").style.opacity = 0
-    colsArray.forEach(col => {
-        let clone = col.cloneNode(true);
-        col.parentElement.replaceChild(clone, col)
-    })}
     }
-)
+})
